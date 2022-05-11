@@ -36,7 +36,6 @@
         clone: yes
         update: yes
         version: master
-      
       register: gitclone
     
     - name: "Run MVN Clean install"
