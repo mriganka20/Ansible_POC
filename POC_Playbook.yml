@@ -35,11 +35,9 @@
         dest: /opt/git-repo
         clone: yes
         update: yes
-      register: gitclone
       
     - name: "Run MVN Clean install"
       command: "mvn -f /opt/git-repo/pom.xml clean install"
-      when: gitclone.changed
      
     - name: "Execute Jar File"
       shell: "java -cp /opt/git-repo/target/jb-hello-world-maven-0.1.0.jar hello.HelloWorld"
