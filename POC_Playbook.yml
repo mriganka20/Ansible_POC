@@ -1,0 +1,44 @@
+---
+- name: Install Maven
+  hosts: all
+  become: yes
+  strategy: free
+  gather_facts: no
+  tasks:
+      - name: Create /opt directory
+        file: path=/opt state=directory
+  
+      - name: Download Maven3
+        get_url: dest=/opt/apache-maven-3.8.5-bin.tar.gz url=http://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
+  
+      - name: Unpack Maven3
+        action: command creates=/opt/maven chdir=/opt tar zxvf /opt/apache-maven-3.8.5-bin.tar.gz
+
+      - name: Create Maven3 directory link
+        file: path=/opt/maven src=/opt/apache-maven-3.8.5 state=link
+  
+      - name: Set mvn link
+        action: command update-alternatives --install /usr/bin/mvn mvn /opt/maven/bin/mvn 1
+    
+      - name: Export Maven Path
+        shell: export PATH=/opt/apache-maven-3.8.5/bin:$PATH
+    
+      - name: echo PATH
+        shell: echo $PATH
+    
+      - name: Remove Maven3 archive
+        file: path=/opt/apache-maven-3.8.5-bin.tar.gz state=absent
+
+      - name: Clone a Git repository
+        git:
+          repo: 'https://github.ibm.com/Boomerang-Delivery/queuedepthdashboard.git'
+          dest: /opt/git-repo
+          version: master
+          clone: yes
+          update: yes         
+		
+      - name: Run MVN Clean install
+        command: mvn -f /opt/git-repo/pom.xml clean install
+        
+      - name: Execute Jar File
+        shell: java -cp /opt/git-repo/target/jb-hello-world-maven-0.1.0.jar hello.HelloWorld
