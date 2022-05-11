@@ -31,11 +31,10 @@
       
     - name: "Clone a Git repository"
       git:
+        repo: "https://github.com/jabedhasan21/java-hello-world-with-maven.git"
         dest: /opt/git-repo
-        repo: "https://github.ibm.com/Boomerang-Delivery/queuedepthdashboard.git"
         clone: yes
         update: yes
-        version: master
       register: gitclone
     
     - name: "Run MVN Clean install"
