@@ -1,48 +1,47 @@
 --- 
-- 
+- name: "Anible POC"
   become: true
   gather_facts: false
   hosts: all
-  name: "Anible POC"
   strategy: free
   tasks: 
-    - 
+    - name: "Create /opt directory"
       file: "path=/opt state=directory"
-      name: "Create /opt directory"
-    - 
+      
+    - name: "Download Maven3"
       get_url: "dest=/opt/apache-maven-3.8.5-bin.tar.gz url=http://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz"
-      name: "Download Maven3"
-    - 
+      
+    - name: "Unpack Maven3"
       action: "command creates=/opt/maven chdir=/opt tar zxvf /opt/apache-maven-3.8.5-bin.tar.gz"
-      name: "Unpack Maven3"
-    - 
+    
+    - name: "Create Maven3 directory link"
       file: "path=/opt/maven src=/opt/apache-maven-3.8.5 state=link"
-      name: "Create Maven3 directory link"
-    - 
+      
+    - name: "Set mvn link"
       action: "command update-alternatives --install /usr/bin/mvn mvn /opt/maven/bin/mvn 1"
-      name: "Set mvn link"
-    - 
-      name: "Export Maven Path"
+      
+    - name: "Export Maven Path"
       shell: "export PATH=/opt/apache-maven-3.8.5/bin:$PATH"
-    - 
-      name: "echo PATH"
+ 
+    - name: "echo PATH"
       shell: "echo $PATH"
-    - 
+    
+    - name: "Remove Maven3 archive"
       file: "path=/opt/apache-maven-3.8.5-bin.tar.gz state=absent"
-      name: "Remove Maven3 archive"
-    - 
-      git: 
-        clone: true
+      
+    - name: "Clone a Git repository"
+      git:
         dest: /opt/git-repo
         repo: "https://github.ibm.com/Boomerang-Delivery/queuedepthdashboard.git"
-        update: true
+        clone: yes
+        update: yes
         version: master
-      name: "Clone a Git repository"
+      
       register: gitclone
-    - 
+    
+    - name: "Run MVN Clean install"
       command: "mvn -f /opt/git-repo/pom.xml clean install"
-      name: "Run MVN Clean install"
       when: gitclone.changed
-    - 
-      name: "Execute Jar File"
+     
+    - name: "Execute Jar File"
       shell: "java -cp /opt/git-repo/target/jb-hello-world-maven-0.1.0.jar hello.HelloWorld"
