@@ -36,7 +36,7 @@
           version: master
           clone: yes
           update: yes
-	  register: gitclone
+	register: gitclone
 		
       - name: Run MVN Clean install
         command: mvn -f /opt/git-repo/pom.xml clean install
