@@ -1,0 +1,17 @@
+--- 
+- name: "SAP TCode Monitor POC"
+  become: true
+  gather_facts: false
+  hosts: localhost
+  strategy: free
+  tasks: 
+      
+    - name: "Clone Git repository"
+      git:
+        repo: "https://github.com/mriganka20/Ansible_POC.git"
+        dest: /opt/git-repo
+        clone: yes
+        update: yes
+      
+    - name: "Execute Python script"
+      command: /opt/git-repo/PY_SAP_SM50_TCodeMonitor.py
