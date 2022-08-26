@@ -2,7 +2,7 @@
 - name: "SAP TCode Monitor POC"
   become: true
   gather_facts: false
-  hosts: localhost
+  hosts: winhost
   strategy: free
   tasks: 
       
