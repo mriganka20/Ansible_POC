@@ -7,11 +7,11 @@
   tasks: 
       
     - name: "Clone Git repository"
-      git:
+      ansible.windows.win_command:
         repo: "https://github.com/mriganka20/Ansible_POC.git"
-        dest: C:\Users\MrigankaMajumder\Desktop\DWAutomation\Ansible_POC\AnsibleCodes
+        dest: C:\Users\ansibleuser\Desktop\DWAutomation\Ansible_POC\AnsibleCodes
         clone: yes
         update: yes
       
     - name: "Execute Python script"
-      command: C:\Users\MrigankaMajumder\Desktop\DWAutomation\Ansible_POC\AnsibleCodes\PY_SAP_SM50_TCodeMonitor.py
+      command: C:\Users\ansibleuser\Desktop\DWAutomation\Ansible_POC\AnsibleCodes\PY_SAP_SM50_TCodeMonitor.py
