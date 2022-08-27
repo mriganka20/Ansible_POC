@@ -6,8 +6,12 @@
   strategy: free
   tasks: 
       
-    - name: "Clone Git repository"
-      win_command: git clone https://github.com/mriganka20/Ansible_POC.git
+    - name: "Clone Git repository
+     git:
+        repo: "https://github.com/mriganka20/Ansible_POC.git"
+        dest: /opt/git-repo
+        clone: yes
+        update: yes
       
     - name: "Execute Python script"
       win_command: python C:\\Users\\ansibleuser\\Desktop\\DWAutomation\\Ansible_POC\\AnsibleCodes\\PY_SAP_SM50_TCodeMonitor.py
